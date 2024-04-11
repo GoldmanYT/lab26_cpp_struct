@@ -45,7 +45,14 @@ int main()
             cout << "Enter name to find: ";
             cin >> temp;
             list* ans = list_find(temp);
-            cout << ans << "\n";
+            if (ans != nullptr)
+            {
+                cout << ans << "\n";
+            }
+            else
+            {
+                cout << "not found\n";
+            }
         }
     }
     list_delete();
@@ -57,16 +64,11 @@ void list_extend()
 {
     list* elem;
     char temp[N];
-    while (true)
+    elem = new list;
+    cout << "Enter new name (# - for end): ";
+    cin >> elem->name;
+    while (strcmp(elem->name, "#") != 0)
     {
-        elem = new list;
-        cout << "Enter new name (# - for end): ";
-        cin >> elem->name;
-        if (strcmp(elem->name, "#") == 0)
-        {
-        	delete elem;
-            break;
-        }
         if (head == nullptr)
         {
             head = elem;
@@ -80,7 +82,11 @@ void list_extend()
             head->left->right = elem;
             head->left = elem;
         }
+        elem = new list;
+        cout << "Enter new name (# - for end): ";
+        cin >> elem->name;
     }
+    delete elem;
 }
 
 
@@ -95,9 +101,10 @@ void list_print()
             cout << (elem != head ? ", \n" : "\n") << elem << ": " << elem->name;
             elem = elem->right;
         } while (elem != head);
+        cout << "\n";
     }
 
-    cout << "\n]\n";
+    cout << "]\n";
 }
 
 
@@ -110,7 +117,7 @@ list* list_find(char value[])
         do {
             if (strcmp(elem->name, value) == 0)
             {
-                return elem;
+                return elem->left;
             }
             elem = elem->right;
         } while (elem != head);
@@ -132,4 +139,5 @@ void list_delete()
             elem = next;
         } while (elem != head);
     }
+    head = nullptr;
 }
